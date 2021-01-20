@@ -5,6 +5,5 @@
  */
 export const environment = {
   production: true,
-  projectUrl:
-    "http://plcapidev-env-1.eba-mi9htzpb.us-east-1.elasticbeanstalk.com",
+  projectUrl: "http://127.0.0.1:8000",
 };
