@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from "@angular/core";
 import {
   HttpInterceptor,
   HttpEvent,
@@ -6,24 +6,31 @@ import {
   HttpRequest,
   HttpResponse,
   HttpErrorResponse,
-} from '@angular/common/http';
-import { Observable, Subject, throwError } from 'rxjs';
-import { finalize, map, catchError, switchMap, tap, takeUntil } from 'rxjs/operators';
-import { SharedService } from 'app/services/shared/shared.service';
-import { RootState, selectUser } from '../store';
-import { select, Store } from '@ngrx/store';
-import { SetUser } from '../store/user/user.action';
-import { User } from '../model/user.model';
+} from "@angular/common/http";
+import { Observable, Subject, throwError } from "rxjs";
+import {
+  finalize,
+  map,
+  catchError,
+  switchMap,
+  tap,
+  takeUntil,
+} from "rxjs/operators";
+import { SharedService } from "app/services/shared/shared.service";
+import { RootState, selectUser } from "../store";
+import { select, Store } from "@ngrx/store";
+import { SetUser } from "../store/user/user.action";
+import { User } from "../model/user.model";
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class HttpInterceptorService implements HttpInterceptor {
-  currentRequestCount = 0
+  currentRequestCount = 0;
 
-  user: User
-  
-  destroyed$ = new Subject()
+  user: User;
+
+  destroyed$ = new Subject();
 
   constructor(
     private sharedService: SharedService,
@@ -33,9 +40,9 @@ export class HttpInterceptorService implements HttpInterceptor {
       .pipe(select(selectUser), takeUntil(this.destroyed$))
       .subscribe((result) => {
         if (result) {
-          this.user = result
+          this.user = result;
         }
-      })
+      });
   }
 
   /**
@@ -44,42 +51,47 @@ export class HttpInterceptorService implements HttpInterceptor {
    * @memberof HttpInterceptorService
    */
   getEmailHeader() {
-    const url = window.location.href
+    const url = window.location.href;
 
-    const find = url.search('email')
+    const find = url.search("email");
 
-    const email = url.substr(find, url.length).split('=')[1]
+    const email = url.substr(find, url.length).split("=")[1];
 
-    return email
+    return email;
   }
 
   /**
    *
    * Injects Token
    * @param {HttpRequest<any>} request
-   * @return {*} 
+   * @return {*}
    * @memberof HttpInterceptorService
    */
   injectToken(request: HttpRequest<any>) {
-    if (request.url.includes('reset-password')) {
-      request.body['email'] = this.getEmailHeader()
-      request.body['password_confirmation'] = request.body['confirmPassword']
+    if (request.url.includes("reset-password")) {
+      request.body["email"] = this.getEmailHeader();
+      request.body["password_confirmation"] = request.body["confirmPassword"];
 
-      return request.clone({})
+      return request.clone({});
+    }
+
+    if (request.url.includes("signup")) {
+      request.body["name"] = request.body["fullName"];
+      request.body["password_confirmation"] = request.body["confirmPassword"];
+
+      return request.clone({});
     }
 
     if (this.user !== undefined) {
-      const {
-        access_token
-      } = this.user
-  
+      const { access_token } = this.user;
+
       return request.clone({
         setHeaders: {
-          Authorization: `Bearer ${access_token}`
+          Authorization: `Bearer ${access_token}`,
         },
       });
     } else {
-      return request.clone({})
+      return request.clone({});
     }
   }
 
@@ -92,11 +104,11 @@ export class HttpInterceptorService implements HttpInterceptor {
 
     return next.handle(this.injectToken(req)).pipe(
       tap((evt: any) => {
-        console.log(evt.url)
+        console.log(evt.url);
         if (evt instanceof HttpResponse) {
-          if(evt.body && evt.status === 200) {
-            if (evt.url.includes('login')) {
-              this.store.dispatch(new SetUser(evt.body))
+          if (evt.body && evt.status === 200) {
+            if (evt.url.includes("login")) {
+              this.store.dispatch(new SetUser(evt.body));
             }
           }
         }
@@ -105,14 +117,13 @@ export class HttpInterceptorService implements HttpInterceptor {
         if (error.status === 401) {
           if (error.url.includes("refresh")) {
             // if refresh token is also expired
-            return throwError(
-              'Error, please try again');
+            return throwError("Error, please try again");
           } else {
             // if access token is expired
           }
         }
         if (error.status === 400) {
-          if (error.url.includes('refresh')) {
+          if (error.url.includes("refresh")) {
           }
         }
         // handle http errors
@@ -127,7 +138,7 @@ export class HttpInterceptorService implements HttpInterceptor {
         this.currentRequestCount--;
         if (this.currentRequestCount === 0) {
           // hide loading spinner if all requests are done
-          console.log('All requests are done');
+          console.log("All requests are done");
         }
       })
     );
