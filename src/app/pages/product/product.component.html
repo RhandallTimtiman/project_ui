@@ -1,0 +1,69 @@
+<nb-card status="primary">
+  <nb-card-header>List Of My Products</nb-card-header>
+  <nb-card-body>
+    <div class="row show-grid">
+      <div class="col-6 search"></div>
+      <div class="col-6 add-section">
+        <button nbButton hero status="primary" (click)="addProduct()">
+          Add Product <nb-icon icon="plus-outline"></nb-icon>
+        </button>
+      </div>
+    </div>
+    <table nbSort [nbTreeGrid]="dataSource" class="mb-4" equalColumnsWidth>
+      <tr nbTreeGridHeaderRow *nbTreeGridHeaderRowDef="displayedColumns"></tr>
+      <tr
+        nbTreeGridRow
+        *nbTreeGridRowDef="let row; columns: displayedColumns"
+      ></tr>
+
+      <ng-container [nbTreeGridColumnDef]="'id'">
+        <th nbTreeGridHeaderCell *nbTreeGridHeaderCellDef>Product ID</th>
+        <td nbTreeGridCell *nbTreeGridCellDef="let row">
+          {{ row?.data?.id }}
+        </td>
+      </ng-container>
+
+      <ng-container [nbTreeGridColumnDef]="'name'">
+        <th nbTreeGridHeaderCell *nbTreeGridHeaderCellDef>Product Name</th>
+        <td nbTreeGridCell *nbTreeGridCellDef="let row">
+          {{ row?.data?.name }}
+        </td>
+      </ng-container>
+
+      <ng-container [nbTreeGridColumnDef]="'description'">
+        <th nbTreeGridHeaderCell *nbTreeGridHeaderCellDef>
+          Product Description
+        </th>
+        <td nbTreeGridCell *nbTreeGridCellDef="let row">
+          {{ row?.data?.description }}
+        </td>
+      </ng-container>
+
+      <ng-container [nbTreeGridColumnDef]="'quantity'">
+        <th nbTreeGridHeaderCell *nbTreeGridHeaderCellDef>Quantity</th>
+        <td nbTreeGridCell *nbTreeGridCellDef="let row">
+          {{ row?.data?.quantity }}
+        </td>
+      </ng-container>
+
+      <ng-container [nbTreeGridColumnDef]="'actions'">
+        <th nbTreeGridHeaderCell *nbTreeGridHeaderCellDef>Actions</th>
+        <td nbTreeGridCell *nbTreeGridCellDef="let row">
+          <button
+            nbButton
+            status="warning"
+            class="mr-2"
+            (click)="updateGroup(row?.data)"
+          >
+            <nb-icon icon="edit-outline"></nb-icon>
+          </button>
+
+          <button nbButton status="danger" (click)="deleteProduct(row?.data)">
+            <nb-icon icon="trash-2-outline"></nb-icon>
+          </button>
+        </td>
+      </ng-container>
+    </table>
+    <div class="no-data-found mb-4" *ngIf="!products.length">No Data Found</div>
+  </nb-card-body>
+</nb-card>

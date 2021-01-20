@@ -1,0 +1,120 @@
+$sizes: 12;
+
+@mixin margin-classes {
+  @for $i from 1 through $sizes {
+     $margin: $i * 0.25rem;
+    /* margin #{$margin} */
+    .m-#{$i}  {margin: $margin;}
+    .ml-#{$i} {margin-left: $margin;}
+    .mr-#{$i} {margin-right: $margin;}
+    .mt-#{$i} {margin-top: $margin;}
+    .mb-#{$i} {margin-bottom: $margin;}
+    .mx-#{$i} {margin-left: $margin; margin-right: $margin;}
+    .my-#{$i} {margin-top: $margin; margin-bottom: $margin;}
+  }
+}
+@include margin-classes;
+
+
+@mixin padding-classes {
+  @for $i from 1 through $sizes {
+    $padding: $i * 0.25rem;
+    /* padding #{$padding} */
+    .p-#{$i} {padding: $padding;}
+    .pl-#{$i} {padding-left: $padding;}
+    .pr-#{$i} {padding-right: $padding;}
+    .pt-#{$i} {padding-top: $padding;}
+    .pb-#{$i} {padding-bottom: $padding;}
+    .px-#{$i} {padding-left: $padding; padding-right: $padding;}
+    .py-#{$i} {padding-top: $padding; padding-bottom: $padding;}
+  }
+}
+@include padding-classes;
+
+@mixin width-classes {
+  @for $i from 1 to 2 {
+    $width: $i * 1px;
+
+    .w-#{$i}-p {
+      width: $width !important;
+    }
+
+    .w-#{$i} {
+      width: $width;
+    }
+  }
+}
+@include width-classes;
+
+@mixin height-classes {
+  @for $i from 1 to 2 {
+    $height: $i * 1px;
+
+    .h-#{$i}-p {
+      height: $height !important;
+    }
+
+    .h-#{$i} {
+      height: $height;
+    }
+  }
+}
+@include height-classes;
+
+
+@mixin border-radius-classes {
+  @for $i from 1 to 1 {
+    $border: $i * 1px;
+
+    .br-#{$i} {
+      border-radius: $border;
+    }
+  }
+}
+@include border-radius-classes;
+
+.modal-sm {
+  width: 600px;
+}
+
+.modal-md {
+  width: 800px;
+}
+
+.modal-lg {
+  width: 1000px;
+}
+
+
+.flex {
+  display: flex;
+}
+
+.flex-row-end {
+  justify-content: flex-end;
+}
+
+.flex-row-start {
+  justify-content: flex-start;
+}
+
+.flex-row-center {
+  justify-content: center;
+}
+
+.flex-row-space-between {
+  justify-content: space-between;
+}
+
+.flex-row-space-evenly {
+  justify-content: space-evenly;
+}
+
+.flex-row-space-around {
+  justify-content: space-around;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+

@@ -1,0 +1,57 @@
+<nb-card accent="info">
+  <nb-card-header>Edit Product Information</nb-card-header>
+  <nb-card-body>
+    <form [formGroup]="productForm">
+      <div class="form-group">
+        <label for="groupName" class="label">Product Name</label>
+        <input
+          formControlName="name"
+          id="groupName"
+          fullWidth
+          nbInput
+          type="text"
+          [status]="hasError('name') ? 'danger' : 'basic'"
+        />
+      </div>
+      <div class="form-group">
+        <label for="description" class="label">Product Description</label>
+        <input
+          formControlName="description"
+          id="description"
+          fullWidth
+          nbInput
+          type="text"
+          [status]="hasError('description') ? 'danger' : 'basic'"
+        />
+      </div>
+      <div class="form-group">
+        <label for="description" class="label">Product Quantity</label>
+        <input
+          formControlName="quantity"
+          id="description"
+          fullWidth
+          nbInput
+          min="0"
+          type="number"
+          [status]="hasError('quantity') ? 'danger' : 'basic'"
+        />
+      </div>
+    </form>
+  </nb-card-body>
+  <nb-card-footer>
+    <div class="flex flex-row-end">
+      <button
+        [disabled]="productForm.invalid"
+        (click)="updateProduct()"
+        [nbSpinner]="loading"
+        nbSpinnerStatus="danger"
+        nbButton
+        hero
+        status="primary"
+      >
+        Edit Product
+      </button>
+      <button nbButton class="ml-2" (click)="dismiss()">Close</button>
+    </div>
+  </nb-card-footer>
+</nb-card>
